@@ -1,38 +1,190 @@
+/* src/App.css */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+body {
+  /* background-color: rgb(17, 17, 106); */
+  /* use some gradient in background color from left to right */
+  background-image: linear-gradient(to right, rgb(85, 206, 208), rgb(8, 101, 193));
+  background-repeat: no-repeat;
+  
+  background-attachment: fixed;
+    background-size: cover;
+}
 .App {
   text-align: center;
+  margin: 20px;
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.weather-app {
+  /* background-color: rgb(255, 255, 255); */
+  padding: 20px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+.weather-app h1 {
+  color: white;
+  text-align: left;
+  font-size: 70px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.weather-app input {
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.weather-info-container {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: left;
+  justify-content: space-between;
+  padding-top: 40px;
+}
+
+.weather-info-container-left {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  /* padding-top: 40px; */
+  color: white;
+  border-right: 1px solid white;
+  padding-right: 40px;
+  /* font-size: 100px;
+  text-align: left; */
+}
+
+.weather-temp {
+  font-size: 100px;
+  color: white;
+  align-self: self-start;
+  margin: 0px;
+  text-wrap: nowrap;
+}
+
+.weather-condition {
+  font-size: 30px;
+  color: white;
+  text-align: left;
+  margin-top: 0px;
+}
+
+.weather-icon {
+  width: 350px;
+  height: 350px;
+}
+
+.weather-info-container-right {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding-left: 40px;
+  padding-right: 40px;
+  
+}
+.celsius-label{
   color: white;
+  font-size: 16px;
+  padding-top: 10px;
+}
+.celsius-label-container{
+  display: flex;
+  align-items:end;
+  justify-content:end;
 }
 
-.App-link {
-  color: #61dafb;
+/* .weather-app > div {
+  /* border-top: 1px solid rgb(199, 199, 199); */
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+} */ */
+
+/* .weather-app > div > div {
+  width: 50%;
+} */
+
+/* .weather-app-main > div {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */
+
+.weather-app button {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.weather-info {
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 1024px) {
+  .weather-info-container{
+    flex-direction: column;
+    /* padding-top: 150px; */
   }
-  to {
-    transform: rotate(360deg);
+  .weather-info-container-left{
+    border-right: none;
+  }
+  .weather-temp{
+    font-size: 70px;
+    text-wrap: nowrap;
+  }
+  .weather-icon{
+    width: 200px;
+    height: 200px;
+  }
+  /* .weather-condition{
+    font-size: 20px;
+  } */
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header h1 {
+    font-size: 50px;
+  }
+
+  .weather-info-container{
+    flex-direction: column;
+    padding-top: 150px;
+  }
+
+  .weather-icon{
+    width: 100px;
+    height: 100px;
+  }
+  .weather-temp{
+    font-size: 20px;
+  }
+  .weather-condition{
+    font-size: 20px;
+  }
+  .weather-info-container-left{
+    border-right: none;
   }
 }
