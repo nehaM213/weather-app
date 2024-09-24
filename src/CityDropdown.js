@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import "./CityDropdown.css"; // Add some styles (defined earlier)
+import React, { useState, useCallback, useMemo } from "react";
+import "./CityDropdown.css";
 import { LuSearch } from "react-icons/lu";
 
 const cities = [
@@ -13,75 +13,85 @@ const cities = [
   "San Diego",
   "Dallas",
   "San Jose",
-  // You can add more cities here
 ];
 
-const CityDropdown = ({ onCitySelect }) => {
-  const [searchTerm, setSearchTerm] = useState(""); // User search input
-  const [filteredCities, setFilteredCities] = useState(cities); // Filtered city list
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Modal visibility
-  const [selectedCity, setSelectedCity] = useState(null); // Currently selected city
+const CityDropdown = React.memo(({ onCitySelect }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // Filter the cities based on user search
-  const handleSearch = (e) => {
-    const value = e.target.value;
+  const filteredCities = useMemo(() => {
+    if (searchTerm === "") return cities;
+    return cities.filter((city) =>
+      city.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
+
+  const handleSearch = useCallback((value) => {
     setSearchTerm(value);
-    setSelectedCity(null); // Clear the selected city when typing starts
-    setIsDropdownOpen(true); // Open dropdown when typing
+    setIsDropdownOpen(true);
+  }, []);
 
-    if (value === "") {
-      setFilteredCities(cities);
-    } else {
-      const filtered = cities.filter((city) =>
-        city.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredCities(filtered);
-    }
-  };
+  const handleCitySelect = useCallback(
+    (city) => {
+      setSearchTerm(city);
+      setIsDropdownOpen(false);
+      onCitySelect(city);
+    },
+    [onCitySelect]
+  );
 
-  // When a city is selected
-  const handleCitySelect = (city) => {
-    setSelectedCity(city); // Set selected city
-    setSearchTerm(""); // Clear search input
-    setIsDropdownOpen(false); // Close dropdown
-    onCitySelect(city); // Notify parent about the selection
-  };
+  const handleInputChange = useCallback(
+    (e) => {
+      handleSearch(e.target.value);
+    },
+    [handleSearch]
+  );
+
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === "Enter" && searchTerm.trim() !== "") {
+        e.preventDefault();
+        handleCitySelect(searchTerm.trim());
+      }
+    },
+    [searchTerm, handleCitySelect]
+  );
 
   return (
     <div className="city-dropdown">
       <div className="input-container">
         <input
           type="text"
-          value={selectedCity || searchTerm} // Show selected city or search term
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Toggle dropdown
-          onChange={handleSearch} // Update search term
+          value={searchTerm}
+          onClick={() => setIsDropdownOpen(true)}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           placeholder="Search for a city..."
           className="city-input"
         />
-        <LuSearch className="search-icon"/>
+        <LuSearch className="search-icon" />
       </div>
 
       {isDropdownOpen && (
         <div className="dropdown">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearch}
-            placeholder="Search cities..."
-            className="search-input"
-          />
-
           <ul className="city-list">
             {filteredCities.length > 0 ? (
-              filteredCities.map((city, index) => (
+              filteredCities.map((city) => (
                 <li
-                  key={index}
+                  key={city}
                   onClick={() => handleCitySelect(city)}
                   className="city-item"
                 >
                   {city}
                 </li>
               ))
+            ) : searchTerm.trim() !== "" ? (
+              <li
+                onClick={() => handleCitySelect(searchTerm.trim())}
+                className="custom-city city-item"
+              >
+                Search for "{searchTerm.trim()}"
+              </li>
             ) : (
               <li className="no-city">No cities found</li>
             )}
@@ -90,6 +100,8 @@ const CityDropdown = ({ onCitySelect }) => {
       )}
     </div>
   );
-};
+});
+
+CityDropdown.displayName = "CityDropdown";
 
 export default CityDropdown;
