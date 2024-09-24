@@ -1,9 +1,9 @@
 .forecast-card {
     border: 1px solid #ccc;
-    padding: 5px;
+    padding: 10px;
     border-radius: 10px;
     text-align: center;
-    width: 150px;
+    width: 100px;
     background-color: #f9f9f9;
 }
 
@@ -20,9 +20,11 @@
 
 .forecast-card p{
     margin: 2px;
+    font-size: 14px;
 }
 .forecast-card h3{
     margin: 2px;
+    font-size: 15px;
 }
 
 @media screen and (max-width: 768px) {
